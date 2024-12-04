@@ -31,7 +31,7 @@ const CompareBreeds = () => {
     try {
       const response = await authen.find();
       if (response.EC === 0) {
-        const breeds = response.DT.map(breed => breed.name);
+        const breeds = response.DT.map((breed) => breed.name);
         setDogNames(breeds);
       } else {
         setError(response.EM);
@@ -65,22 +65,22 @@ const CompareBreeds = () => {
       // Kiểm tra nếu API trả về thông tin của giống chó
       if (response && response.EC === 0 && response.DT && response.DT.length > 0) {
         // Tìm giống chó chính xác dựa trên tên
-        const breedDetails = response.DT.filter(breed => breed.name === breedName);
+        const breedDetails = response.DT.filter((breed) => breed.name === breedName);
 
         if (breedDetails.length > 0) {
-          setDogDetails(prevState => ({
+          setDogDetails((prevState) => ({
             ...prevState,
             [breedKey]: breedDetails[0], // Cập nhật thông tin giống chó
           }));
         } else {
-          setDogDetails(prevState => ({
+          setDogDetails((prevState) => ({
             ...prevState,
             [breedKey]: null, // Nếu không tìm thấy giống chó, trả về null
           }));
           toast.error(`No details found for ${breedName}`);
         }
       } else {
-        setDogDetails(prevState => ({
+        setDogDetails((prevState) => ({
           ...prevState,
           [breedKey]: null, // Nếu không tìm thấy giống chó, trả về null
         }));
@@ -96,23 +96,43 @@ const CompareBreeds = () => {
 
   // Handle khi người dùng nhấn nút So sánh
   const handleCompareClick = () => {
-    // Lọc các giống chó đã được chọn
-    const selectedValues = Object.values(selectedBreeds).filter(breed => breed !== "");
+    const selectedValues = Object.values(selectedBreeds).filter((breed) => breed !== '');
 
     if (selectedValues.length < 2) {
-      toast.error("Please select at least 2 breeds before comparing.");
+      toast.error('Please select at least 2 breeds before comparing.');
       return;
     }
 
-    // Gọi API để lấy thông tin giống chó cho từng giống đã chọn
-    selectedValues.forEach(breed => {
+    selectedValues.forEach((breed) => {
       fetchBreedDetails(breed, `breed${selectedValues.indexOf(breed) + 1}`);
     });
   };
 
+  // Lấy danh sách giống chó đã chọn từ localStorage
+  useEffect(() => {
+    const savedSelectedBreeds = JSON.parse(localStorage.getItem('selectedBreedsDetails')) || [];
+    if (savedSelectedBreeds.length > 0) {
+      const updatedSelectedBreeds = { ...selectedBreeds };
+      savedSelectedBreeds.forEach((breed, index) => {
+        updatedSelectedBreeds[`breed${index + 1}`] = breed.name;
+      });
+      setSelectedBreeds(updatedSelectedBreeds);
+    }
+  }, []);
+
+  // Cập nhật danh sách giống chó và lấy thông tin chi tiết khi trang được tải
   useEffect(() => {
     fetchDogNames();
   }, []);
+
+  // Cập nhật thông tin chi tiết giống chó khi selectedBreeds thay đổi
+  useEffect(() => {
+    Object.values(selectedBreeds).forEach((breedName, index) => {
+      if (breedName) {
+        fetchBreedDetails(breedName, `breed${index + 1}`);
+      }
+    });
+  }, [selectedBreeds]);
 
   return (
     <div className="home-container text-[#16423C] flex flex-col min-h-screen bg-[#F9F9F9]">
@@ -150,8 +170,8 @@ const CompareBreeds = () => {
               </div>
               <select
                 value={selectedBreeds[breedKey]}
-                onChange={e => {
-                  setSelectedBreeds(prevState => ({
+                onChange={(e) => {
+                  setSelectedBreeds((prevState) => ({
                     ...prevState,
                     [breedKey]: e.target.value,
                   }));
@@ -192,7 +212,6 @@ const CompareBreeds = () => {
                     <p><strong>Barking Level: </strong>{dogDetails[breedKey].barkingLevel}/5</p>
                     <p><strong>Energy Level: </strong>{dogDetails[breedKey].energyLevel}/5</p>
                     <p><strong>Mental Stimulation Needs: </strong>{dogDetails[breedKey].mentalStimulationNeeds}/5</p>
-                    <p><strong>Color: </strong>{dogDetails[breedKey].colors.join(', ')}</p>
                   </div>
                 </div>
               )}
@@ -200,6 +219,7 @@ const CompareBreeds = () => {
           );
         })}
       </div>
+
       <Footer />
 
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
