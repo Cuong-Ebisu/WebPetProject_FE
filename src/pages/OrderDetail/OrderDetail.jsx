@@ -52,7 +52,7 @@ const OrderDetail = () => {
       message.error(t("Can not cancel order"));
       return;
     }
-    let order = clientApi.service("order");
+    let order = clientApi.service("orders");
     try {
       let data = { ...orderDetail, status: "cancel" };
       let response = await order.patch(id, data);

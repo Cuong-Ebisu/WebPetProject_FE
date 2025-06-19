@@ -190,7 +190,7 @@ const Header = () => {
         {isBreedMenuOpen && (
           <div
             ref={breedMenuRef}
-            className="absolute top-14 left-0 w-[700px] h-[320px] bg-white text-gray-700 p-6 rounded-lg shadow-lg z-10 flex justify-around"
+            className="absolute top-14 left-0 w-[700px] h-[260px] bg-white text-gray-700 p-6 rounded-lg shadow-lg z-10 flex justify-around"
           >
             <div className="flex flex-col items-start">
               <button onClick={handleViewAllBreeds} className="text-teal-600 font-bold mb-2">{t('header.exploreBreeds')}</button>
@@ -213,10 +213,10 @@ const Header = () => {
                 <FaPaw className="mr-2" /> {t('header.foodGuide')}
               </button>
               <span className="text-sm text-gray-500">{t('header.foodHint')}</span>
-              <button onClick={() => window.location.href = "/botpress"} className="flex items-center mt-2 text-teal-600 font-bold">
+              {/* <button onClick={() => window.location.href = "/botpress"} className="flex items-center mt-2 text-teal-600 font-bold">
                 <FaRobot className="mr-2" /> {t('header.aiChat')}
               </button>
-              <span className="text-sm text-gray-500">{t('header.aiChatHint')}</span>
+              <span className="text-sm text-gray-500">{t('header.aiChatHint')}</span> */}
             </div>
           </div>
         )}

@@ -249,7 +249,9 @@ const Statistics = () => {
                   </div>
                   <div className="mb-4 text-lg font-semibold text-teal-500">
                     <span>Total Revenue: </span>
-                    <span className="font-bold text-teal-700">{totalRevenue} VND</span>
+                    <span className="font-bold text-teal-700">
+                      {new Intl.NumberFormat('vi-VN').format(totalRevenue)} VND
+                    </span>
                   </div>
                 </div>
               </div>
