@@ -28,7 +28,7 @@ const TawkToWidget = () => {
             }
           };
         }
-      }, 5000); // Thay đổi thời gian chờ nếu cần
+      }, 500); // Thay đổi thời gian chờ nếu cần
     };
 
     return () => {
