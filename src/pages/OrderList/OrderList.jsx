@@ -56,7 +56,7 @@ const OrderList = () => {
                 <div className="row justify-content-start">
                   {item?.orderDetail?.length > 0 &&
                     item?.orderDetail?.map((product, index) => (
-                      <div className="product col-6" key={index}>
+                      <div className="product-item" key={index}>
                         <div className="item">
                           <img
                             src={
